@@ -1,0 +1,59 @@
+listen: ":8080"
+
+database:
+  path: "./queue.db"
+
+worker:
+  concurrency: 10
+  poll_interval: 5s
+
+http:
+  timeout: 30s
+
+retry:
+  max_duration: 10m
+
+  retry_status_codes:
+    - 429
+    - 500
+    - 502
+    - 503
+    - 504
+
+  backoff:
+    strategy: exponential
+    initial: 5s
+    max: 60s
+
+routes:
+
+  - name: crm
+    match:
+      prefix: /crm
+    rewrite:
+      strip_prefix: true
+    target:
+      base_url: https://api.crm.com
+
+  - name: billing
+    match:
+      prefix: /billing
+    rewrite:
+      strip_prefix: true
+      regex:
+        - pattern: "^/customer/(.*)$"
+          replacement: "/api/v2/customers/$1"
+        - pattern: "^/invoice/(.*)$"
+          replacement: "/api/v1/invoices/$1"
+    target:
+      base_url: https://billing.example.com
+
+  - name: legacy
+    match:
+      regex: "^/legacy/(.*)$"
+    rewrite:
+      regex:
+        - pattern: "^/legacy/(.*)$"
+          replacement: "/v3/$1"
+    target:
+      base_url: https://new-api.example.com
