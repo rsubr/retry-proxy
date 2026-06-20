@@ -1,4 +1,4 @@
-retry-proxy
+/retry-proxy
 *.db
 *.db-wal
 *.db-shm
