@@ -128,6 +128,17 @@ func (r *Repository) RecoverProcessing() error {
 	return err
 }
 
+func (r *Repository) ExpireOldQueued(olderThan time.Time) (int64, error) {
+	res, err := r.db.Exec(`
+		UPDATE jobs SET state='expired', updated_at=?
+		WHERE state='queued' AND created_at < ?`,
+		time.Now().UTC(), olderThan)
+	if err != nil {
+		return 0, err
+	}
+	return res.RowsAffected()
+}
+
 func scanJob(row *sql.Row) (*Job, error) {
 	var j Job
 	var state string

@@ -10,6 +10,10 @@ worker:
 http:
   timeout: 30s
 
+cleanup:
+  max_age: 168h    # 7 days; queued jobs older than this are expired
+  interval: 1h     # how often the cleanup sweep runs
+
 retry:
   max_duration: 10m
 

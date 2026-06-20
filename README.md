@@ -129,6 +129,8 @@ routes:
 | `retry.backoff.strategy` | `exponential` | Backoff strategy (only `exponential` supported) |
 | `retry.backoff.initial` | `5s` | Initial backoff delay |
 | `retry.backoff.max` | `60s` | Maximum backoff delay |
+| `cleanup.max_age` | `168h` | Queued jobs older than this are marked `expired` |
+| `cleanup.interval` | `1h` | How often the cleanup sweep runs |
 
 ---
 

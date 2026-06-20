@@ -14,7 +14,13 @@ type Config struct {
 	Worker   WorkerConfig   `yaml:"worker"`
 	HTTP     HTTPConfig     `yaml:"http"`
 	Retry    RetryConfig    `yaml:"retry"`
+	Cleanup  CleanupConfig  `yaml:"cleanup"`
 	Routes   []Route        `yaml:"routes"`
+}
+
+type CleanupConfig struct {
+	MaxAge   time.Duration `yaml:"max_age"`
+	Interval time.Duration `yaml:"interval"`
 }
 
 type DatabaseConfig struct {
@@ -113,5 +119,11 @@ func applyDefaults(cfg *Config) {
 	}
 	if cfg.Retry.Backoff.Max == 0 {
 		cfg.Retry.Backoff.Max = 60 * time.Second
+	}
+	if cfg.Cleanup.MaxAge == 0 {
+		cfg.Cleanup.MaxAge = 7 * 24 * time.Hour
+	}
+	if cfg.Cleanup.Interval == 0 {
+		cfg.Cleanup.Interval = 1 * time.Hour
 	}
 }
