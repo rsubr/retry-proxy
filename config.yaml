@@ -11,7 +11,8 @@ http:
   timeout: 30s
 
 cleanup:
-  max_age: 168h    # 7 days; queued jobs older than this are expired
+  max_age: 168h    # 7 days; queued jobs older than this are marked expired
+  purge_age: 168h  # 7 days; all jobs older than this are deleted
   interval: 1h     # how often the cleanup sweep runs
 
 retry:

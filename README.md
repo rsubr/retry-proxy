@@ -130,6 +130,7 @@ routes:
 | `retry.backoff.initial` | `5s` | Initial backoff delay |
 | `retry.backoff.max` | `60s` | Maximum backoff delay |
 | `cleanup.max_age` | `168h` | Queued jobs older than this are marked `expired` |
+| `cleanup.purge_age` | `168h` | All jobs older than this are permanently deleted |
 | `cleanup.interval` | `1h` | How often the cleanup sweep runs |
 
 ---

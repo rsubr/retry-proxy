@@ -20,6 +20,7 @@ type Config struct {
 
 type CleanupConfig struct {
 	MaxAge   time.Duration `yaml:"max_age"`
+	PurgeAge time.Duration `yaml:"purge_age"`
 	Interval time.Duration `yaml:"interval"`
 }
 
@@ -122,6 +123,9 @@ func applyDefaults(cfg *Config) {
 	}
 	if cfg.Cleanup.MaxAge == 0 {
 		cfg.Cleanup.MaxAge = 7 * 24 * time.Hour
+	}
+	if cfg.Cleanup.PurgeAge == 0 {
+		cfg.Cleanup.PurgeAge = 7 * 24 * time.Hour
 	}
 	if cfg.Cleanup.Interval == 0 {
 		cfg.Cleanup.Interval = 1 * time.Hour

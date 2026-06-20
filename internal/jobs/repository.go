@@ -128,6 +128,14 @@ func (r *Repository) RecoverProcessing() error {
 	return err
 }
 
+func (r *Repository) PurgeOldJobs(olderThan time.Time) (int64, error) {
+	res, err := r.db.Exec(`DELETE FROM jobs WHERE created_at < ?`, olderThan)
+	if err != nil {
+		return 0, err
+	}
+	return res.RowsAffected()
+}
+
 func (r *Repository) ExpireOldQueued(olderThan time.Time) (int64, error) {
 	res, err := r.db.Exec(`
 		UPDATE jobs SET state='expired', updated_at=?
